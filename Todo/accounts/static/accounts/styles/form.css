@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,600;1,100;1,300&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+:root {
+    --form-background: white;
+    --form-label: #757575;
+    --form-input: asdasd;
+    --form-input-hover: #c2c2c2;
+    --form-input-border: #CCCCCC;
+    --form-input-error: rgb(201, 83, 83);
+    --form-submit: black;
+    --form-submit-text: white;
+    --form-submit-hover:rgb(34, 34, 34);
+    --form-message: rgb(201, 83, 83) ;
+    --form-link : rgb(39, 39, 243);
+}
+
+
+.content__form {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    background-color : var(--form-background);
+    /* box-shadow: 0 0 5px 0; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    max-width: 400px;
+}
+
+.form__title {
+    text-align: center;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form__group label {
+    font-size: small;
+    color: var(--form-label);
+}
+
+.form__group input,
+.form__button {
+    padding: 10px 15px;
+    min-width: 300px;
+    outline: none;
+    border: solid 1px var(--form-input-border);
+    border-radius: 5px;
+}
+
+.invalid input {
+    border: solid 1px var(--form-input-error);
+}
+
+.form input:focus,
+.form input:hover,
+.form button:focus {
+    outline: solid 1px var(--form-input-hover);
+}
+
+.form__message {
+    padding: 0 15px;
+    font-size: small;
+    color: var(--form-message);
+}
+
+.form__button {
+    margin-top: 10px;
+    padding: 10px;
+    font-weight: 800;
+    background-color: var(--form-submit);
+    color: var(--form-submit-text);
+}
+
+#form__login.invalid {
+    background-color:#757575;
+}
+
+.form__button:hover {
+    cursor: pointer;
+    background-color: var(--form-submit-hover);
+}
+
+.form__link{
+    text-align: center;
+}
+.form__link a {
+    font-size: small;
+    font-weight: 700;
+    color: var(--form-link);
+}
+.form__error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* toast container */
+#toast {
+    position: absolute;
+    right: 10px;
+    top: 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toast__item {
+    background-color: var(--toast-background);
+}

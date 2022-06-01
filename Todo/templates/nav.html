@@ -1,0 +1,71 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'styles/navbar.css' %}">
+</head>
+
+<div id="header">
+    <nav class="nav">
+        <ul class="nav__list">
+            <li class="nav__item"><a href="{% url 'accounts:home' %}">Home</a></li>
+            <li class="nav__item"><a href="">Info</a></li>
+            <li class="nav__item"><a href="">Schedule</a></li>
+        </ul>
+
+        <ul class="nav__list">
+            <li id="nav__logo" class="nav__item"><a>Todo App</a></li>
+        </ul>
+
+        <div class="nav__options">
+            <ul class="nav__list">
+                <li>
+                    <div class="search-box">
+                            <input type="text" class="search-txt">
+                            <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </li>
+                <li>
+                    <ul class="nav__list">
+                        <li><a class="user_avatar" href="#"><i class="fa-regular fa-user"></i></a></li>
+                        <li class="subnav_conatainer"">
+                            <span data-selector="#subnav" id="subnav-btn"><a>Nam Anh <i class="fa-solid fa-caret-down"></i></a></span>
+                            <ul class="subnav" id="subnav">
+                                <li class="subnav__item">
+                                    <a class="icon__group" href="">
+                                    <div class="icon"><i class="fa-solid fa-gear"></i></div>
+                                    <span>Settings</span>
+                                    </a>
+                                </li>
+
+                                <li class="subnav__item">
+                                    <a class="icon__group" href="">
+                                        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+
+                                <li class="subnav__item">
+                                    <a class="icon__group" href="">
+                                        <div class="icon"><i class="fa-regular fa-address-card"></i></div>
+                                        <span>Sign up</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+               
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+<script>
+    const navbar_toggle = document.querySelector('#subnav-btn')
+    const navbar = document.querySelector(navbar_toggle.dataset.selector)
+
+    navbar_toggle.onclick = function () {
+        navbar.classList.toggle('active')
+    }
+</script>

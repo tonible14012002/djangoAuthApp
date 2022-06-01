@@ -1,0 +1,114 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{% static 'accounts/styles/form.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="content__form">
+    <div class="form-container">
+        <form id="login-form" class="form" method="POST" action="">
+            {% csrf_token %}
+            <h1 class="form__title">Login</h1>
+
+            <div class="form__group">
+                <label for="id_username">Username</label>
+                <input type="text" id="id_username" name="username">
+                <span class="form__message"></span>
+            </div>
+
+            <div class="form__group">
+                <label for="id_password">Password</label>
+                <input type="password" id="id_password" name="password">
+                <span class="form__message"></span>
+            </div>
+
+            <button type="submit" class="form__button" id="form__login">Submit</button>
+            <p class="form__link"><a href=""> For got password ?</a></p>
+            <div class="form__error">
+                <span class="form__message"></span>
+                <span class="form__message"></span>
+                <span class="form__message"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    validator({
+            formSelector:'#login-form',
+            errorSelector:'.form__message',
+            errorClass: 'invalid',
+            ruleOptions: [
+                validator.isRequired('#id_username', 'This field is required'),
+                validator.isRequired('#id_password', 'This field is requuired'),
+                validator.minLength('#id_password', 8, 'Input at least 8 characters')
+            ],
+            onSubmit:  function(jsonData) {
+                var url = "{% url 'accounts:login-api' %}"
+                var success_url = "{{next}}" || "{% url 'accounts:home' %}"
+                
+                fetch(url,{
+                    method: 'POST',
+                    body: JSON.stringify(jsonData),
+                    headers: {
+                        'content_Type':'applicaton/jason',
+                        'X-CSRFtoken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    mode: 'same-origin'
+                })
+                .then(response=>{
+                    return response.json()
+                })
+                .then((data) => {
+                    switch(data.loginStatus){
+                        case 'failed':
+                            toast({
+                                    containerSelector: '#toast',
+                                    type: 'error',
+                                    title: 'Request error',
+                                    body: '',
+                                    duration: 4000
+                                })
+                            break
+                        case 'disabled':
+                            toast({
+                                containerSelector: '#toast',
+                                type: 'alert',
+                                title: 'Account disabled',
+                                body: 'Your account has been disabled',
+                                duration: 4000
+                            })
+                            break
+                        case 'notfound':
+                            toast({
+                                containerSelector: '#toast',
+                                type: 'error',
+                                title: 'Account incorrect',
+                                body: 'Your username or password is incorrect',
+                                duration: 4000
+                            })
+                            break
+                        case 'success':
+                            window.location.replace(success_url)
+                            break
+                    }
+                })
+                .catch(()=>{
+                    toast({
+                            containerSelector: '#toast',
+                            type: 'error',
+                            title: 'Connection failed',
+                            body: 'Some thing went wrong while changing your password',
+                            duration: 4000
+                        })
+                })
+            }
+        })
+</script>
+{% endblock %}
