@@ -28,7 +28,7 @@
             </div>
 
             <button type="submit" class="form__button" id="form__login">Submit</button>
-            <p class="form__link"><a href=""> For got password ?</a></p>
+            <p class="form__link"><a href="{% url 'accounts:password_reset' %}"> For got password ?</a></p>
             <div class="form__error">
                 <span class="form__message"></span>
                 <span class="form__message"></span>
@@ -56,7 +56,7 @@
                     method: 'POST',
                     body: JSON.stringify(jsonData),
                     headers: {
-                        'content_Type':'applicaton/jason',
+                        'Content_Type':'applicaton/json',
                         'X-CSRFtoken': csrftoken,
                         'X-Requested-With': 'XMLHttpRequest'
                     },

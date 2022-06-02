@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'six'
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'accounts:home'
 LOGIN_URL = 'accounts:login'
 
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'co.tonytech@gmail.com'
+EMAIL_HOST_PASSWORD = '71102Tony'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

@@ -78,7 +78,7 @@
 
 /* replace form after submit */
 
-.replace-form {
+.submitted-alert {
     height: 100%;
     width: 100%;
     display: flex;
@@ -86,16 +86,16 @@
     align-items: center;
     gap: 15px;
 }
-.replace__message {
+.submitted-alert__message {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.replace__message .replace__body {
+.submitted-alert__message .submitted-alert__body {
     font-size: 80%;
 }
 
-.replace__link {
+.submitted-alert__link {
     padding: 10px 35px;
     min-width: 150px;
     border-radius: 5px;
@@ -103,35 +103,35 @@
     text-align: center;
 }
 /* success */
-.success .replace__link{
+.success .submitted-alert__link{
     background-color: var(--toast-success-txt);
 }
-.success .replace__icon i{
+.success .submitted-alert__icon i{
     color: var(--toast-success-txt);
     font-size: 70px;
 }
-.success .replace__link:hover {
+.success .submitted-alert__link:hover {
     background-color: var(--toast-success-border);
 }
 /* error */
-.error .replace__link{
+.error .submitted-alert__link{
     background-color: var(--toast-error-txt);
 }
-.error .replace__icon i{
+.error .submitted-alert__icon i{
     color: var(--toast-error-txt);
     font-size: 70px;
 }
-.error .replace__link:hover {
+.error .submitted-alert__link:hover {
     background-color: var(--toast-error-border);
 }
 /* alert */
-.alert .replace__link{
+.alert .submitted-alert__link{
     background-color: var(--toast-alert-txt);
 }
-.alert .replace__icon i{
+.alert .submitted-alert__icon i{
     color: var(--toast-alert-txt);
     font-size: 70px;
 }
-.alert .replace__link:hover {
+.alert .submitted-alert__link:hover {
     background-color: var(--toast-alert-border);
 }

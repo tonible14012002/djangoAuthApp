@@ -52,29 +52,40 @@ function toast(options = {
     }
 }
 
-function formReplace(options = {
-    formSelector: '#login-form',
+function generateSubmitAlert(options = {
+    selector: 'replace-form',
     type: 'success',
     title: 'sucessfully',
     body: '',
     link: '#',
     linkName:'Login'
 }) {
-    var form = document.querySelector(options.formSelector)
-    var container  = form.parentNode
-    var toReplace = document.createElement('div')
-    form.remove()
+    var submitAlert = document.createElement('div')
+    submitAlert.classList.add(options.selector, options.type)
 
-    toReplace.classList.add('form-replace', options.type)
-    toReplace.innerHTML = `
-        <div class="replace-form">
-            <div class="replace__icon"><i class="${toastIcons[options.type]}"></i></div>
-            <div class="replace__message">
-               <h3 class="replace__title">${options.title}</h3>
-                <p class="replace__body">${options.body}</p>
+    submitAlert.innerHTML = `
+        <div class="${options.selector}">
+            <div class="${options.selector}__icon"><i class="${toastIcons[options.type]}"></i></div>
+            <div class="${options.selector}__message">
+               <h3 class="${options.selector}__title">${options.title}</h3>
+                <p class="${options.selector}__body">${options.body}</p>
             </div>
-            <a class="replace__link" href="${options.link}">${options.linkName}</a>
+            <a class="${options.selector}__link" href="${options.link}">${options.linkName}</a>
         </div>
     `
-    container.append(toReplace)
+    return submitAlert
+}
+
+function replace(options = {
+    targetSelector:'',
+    replaceElement,
+}) {
+    var target = document.querySelector(options.targetSelector)
+    console.log(options.replaceElement)
+    if (target && options.replaceElement) {
+        var parent = target.parentNode
+        target.remove()
+        parent.appendChild(options.replaceElement)
+    }
+
 }

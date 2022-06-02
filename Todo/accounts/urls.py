@@ -16,6 +16,8 @@ urlpatterns = [
     path('password_change/api', views.password_change_api, name='password_change_api'),
     
     path('password_reset/', views. password_reset, name='password_reset'),
-    path('password_reset/api', views.password_reset_api, name='password_reset_api')
-    
+    path('password_reset/api', views.password_reset_api, name='password_reset_api'),
+    path('password_reset/confirm/<uidb64>/<token>', views.password_reset_confirm, name='password_reset_confirm'),
+    path('password_reset/confirm/api/<uidb64>/<token>', views.password_reset_confirm_api, name='password_reset_confirm_api')
+
 ]
