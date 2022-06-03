@@ -4,6 +4,8 @@ from unicodedata import name
 from django.urls import path, reverse_lazy
 from. import views
 from django.contrib.auth import views as auth_views
+
+
 app_name = 'accounts'
 
 urlpatterns = [
@@ -18,6 +20,8 @@ urlpatterns = [
     path('password_reset/', views. password_reset, name='password_reset'),
     path('password_reset/api', views.password_reset_api, name='password_reset_api'),
     path('password_reset/confirm/<uidb64>/<token>', views.password_reset_confirm, name='password_reset_confirm'),
-    path('password_reset/confirm/api/<uidb64>/<token>', views.password_reset_confirm_api, name='password_reset_confirm_api')
+    path('password_reset/confirm/api/<uidb64>/<token>', views.password_reset_confirm_api, name='password_reset_confirm_api'),
+    path('sign_up/', views.signup, name='sign_up'),
+    path('sign_up_api', views.signup_api, name='sign_up_api'),
 
 ]

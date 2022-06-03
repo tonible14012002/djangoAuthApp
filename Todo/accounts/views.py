@@ -1,6 +1,6 @@
 
+from dataclasses import Field
 import random
-from typing import Type
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate, get_user_model, update_session_auth_hash
@@ -18,6 +18,7 @@ from django.core.mail import send_mail
 from django.utils.html import strip_tags
 import json
 from Todo.settings import EMAIL_HOST_USER
+from .form import UserSignUpForm
 # Create your views here.
 
 User = get_user_model()
@@ -125,4 +126,19 @@ def password_reset_confirm_api(request, uidb64, token):
     else:
         return JsonResponse({'status':'failed'})
         
-        
+def signup(request):
+    form = UserSignUpForm()
+    return render(request, 'registration/signup.html', {'form':form})
+
+@ajax_required
+def signup_api(request):
+    if request.method == 'POST':
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            newUser = form.save(commit=False)
+            newUser.set_password(form.cleaned_data['password'])
+            newUser.save()
+            return JsonResponse({'status': 'ok'})
+        else:
+            return JsonResponse({'status':'error', 'errors':form.errors.as_json()})
+    

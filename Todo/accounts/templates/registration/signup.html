@@ -1,0 +1,83 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{% static 'accounts/styles/form.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="content__form">
+    <div class="form-container">
+        <form id="signup-form" class="form" method="POST" action="">
+            {% csrf_token %}
+            <h1 class="form__title">Sign up</h1>
+            {% for field in form %}
+            <div class="form__group">
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                <input id="{{field.id_for_label}}" type="{{field.field.widget.input_type}}" name="{{field.name}}">
+                <span class="form__message"></span>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="form__button" id="form__login">Submit</button>
+            <p class="form__link"><a href="{% url 'accounts:login' %}"> Already have an account ?</a></p>
+            <div class="form__error">
+                <span class="form__message"></span>
+                <span class="form__message"></span>
+                <span class="form__message"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    validator({
+        formSelector: '#signup-form',
+        errorSelector: '.form__message',
+        errorClass: 'invalid',
+        ruleOptions: [
+            validator.isRequired('#id_username', 'Username is required'),
+            validator.minLength('#id_username', 5, 'Username is at least 5 characters'),
+            validator.isRequired('#id_password', 'Input in your password'),
+            validator.isRequired('#id_password2', 'Confirm your password'),
+            validator.isRequired('#id_last_name', 'Your last name is required'),
+            validator.isRequired('#id_first_name', 'Your first name is required'),
+            validator.isRequired('#id_email', 'Input your email'),
+            validator.isEmail('#id_email', 'Input a valid email address'),
+            validator.minLength('#id_password',8 , 'Password is at least 8 characters',),
+            validator.confirm('#id_password2', '#id_password', 'Your confirm password is incorrect'),
+        ],
+        onSubmit: (data) => {
+
+            url = "{% url 'accounts:sign_up_api' %}"
+
+            formData =  new FormData()
+            for (var key in data) {
+                formData.append(key,data[key])
+            }
+            fetch(url,{
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFtoken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                mode: 'same-origin'
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                console.log(data)
+            })
+            .catch(() => {
+                console.log(data)
+            })
+        }
+    })
+</script>
+
+{% endblock %}

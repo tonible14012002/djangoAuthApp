@@ -13,7 +13,7 @@
         </ul>
 
         <ul class="nav__list">
-            <li id="nav__logo" class="nav__item"><a>Todo App</a></li>
+            <li id="nav__logo" class="nav__item"><a>Todo</a></li>
         </ul>
 
         <div class="nav__options">
@@ -28,7 +28,7 @@
                     <ul class="nav__list">
                         <li><a class="user_avatar" href="#"><i class="fa-regular fa-user"></i></a></li>
                         <li class="subnav_conatainer"">
-                            <span data-selector="#subnav" id="subnav-btn"><a>Nam Anh <i class="fa-solid fa-caret-down"></i></a></span>
+                            <span data-selector="#subnav" id="subnav-btn"><a>{{request.user.get_name}} <i class="fa-solid fa-caret-down"></i></a></span>
                             <ul class="subnav" id="subnav">
                                 <li class="subnav__item">
                                     <a class="icon__group" href="">
@@ -38,7 +38,7 @@
                                 </li>
 
                                 <li class="subnav__item">
-                                    <a class="icon__group" href="">
+                                    <a class="icon__group" href="{% url 'accounts:logout' %}">
                                         <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div>
                                         <span>Logout</span>
                                     </a>
