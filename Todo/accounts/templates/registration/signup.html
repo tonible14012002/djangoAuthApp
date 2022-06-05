@@ -19,16 +19,12 @@
                 <label for="{{field.id_for_label}}">{{field.label}}</label>
                 <input id="{{field.id_for_label}}" type="{{field.field.widget.input_type}}" name="{{field.name}}">
                 <span class="form__message"></span>
+                <span class="form__error"></span>
             </div>
             {% endfor %}
 
             <button type="submit" class="form__button" id="form__login">Submit</button>
             <p class="form__link"><a href="{% url 'accounts:login' %}"> Already have an account ?</a></p>
-            <div class="form__error">
-                <span class="form__message"></span>
-                <span class="form__message"></span>
-                <span class="form__message"></span>
-            </div>
         </form>
     </div>
 </div>
@@ -68,13 +64,58 @@
                 mode: 'same-origin'
             })
             .then(response => {
-                return response.json()
+                if (!response.ok)
+                    throw {
+                        status: response.status,
+                        message: response.statusText
+                    }
+                contentType = response.headers.get('Content-Type')
+                if (contentType.startsWith('text/html'))
+                    return response.text()
+                if (contentType.startsWith('application/json'))
+                    return response.json()
             })
             .then(data => {
-                console.log(data)
+                switch (data.status) {
+                    case 'ok':
+                        toast({
+                            containerSelector: '#toast',
+                            type: 'success',
+                            title: 'Register success',
+                            body: 'Activate your account before login',
+                            duration: 4000,
+                        })
+                        var alertMessage = generateSubmitAlert({
+                            selector: 'submitted-alert',
+                            type: 'success',
+                            title: 'Account Created',
+                            body: 'An email has just been sent for activating your account',
+                            link: 'gmail.com',
+                            linkName:'Google mail'
+                        })
+                        replace({
+                            targetSelector: '#signup-form',
+                            replaceElement: alertMessage
+                        })
+                        break
+                    case 'error':
+                    showFormError({
+                        formSelector: '#signup-form',
+                        errorSelector: '.form__error',
+                        errors: data.errors,
+                        errorClass: 'invalid'
+                    })
+                        break
+                }
             })
-            .catch(() => {
-                console.log(data)
+            .catch((error) => { 
+                toast({
+                    containerSelector: '#toast',
+                    type: 'error',
+                    title: error.status,
+                    body: error.message,
+                    duration: 10000,
+                })
             })
         }
     })

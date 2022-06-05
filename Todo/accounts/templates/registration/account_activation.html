@@ -1,0 +1,38 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block head %} <link rel="stylesheet" href="{% static 'accounts/styles/form.css' %}"> {% endblock %}
+{% block content %}
+<div class="content__form">
+    <div class="form-container">
+        <form id="empty-form"></form>
+    </div>
+</div>
+
+<script>
+    "{% if is_valid %}"
+        var alertMessage = generateSubmitAlert({
+            selector: 'submitted-alert',
+            type: 'success',
+            title: 'You account is activated',
+            body: 'Now you can login',
+            link: '{% url "accounts:login" %}',
+            linkName:'Login'
+        })
+    "{% else %}"
+        var alertMessage = generateSubmitAlert({
+            selector: 'submitted-alert',
+            type: 'error',
+            title: 'This link is expired',
+            body: 'This account is already activated',
+            link: '{% url "accounts:login" %}',
+            linkName:'Login'
+        })
+    "{% endif %}"
+        replace({
+            targetSelector: '#empty-form',
+            replaceElement: alertMessage
+        })
+</script>
+
+{% endblock %}

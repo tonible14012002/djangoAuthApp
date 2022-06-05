@@ -24,6 +24,7 @@
 
 .content__form {
     width: 100%;
+    height: 100%;
     padding-bottom: 50px;
     min-height: 400px;
     display: flex;
@@ -75,7 +76,8 @@
     outline: solid 1px var(--form-input-hover);
 }
 
-.form__message {
+.form__message,
+.form__error {
     padding: 0 15px;
     font-size: small;
     color: var(--form-message);
@@ -105,12 +107,6 @@
     font-size: small;
     font-weight: 700;
     color: var(--form-link);
-}
-.form__error {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 

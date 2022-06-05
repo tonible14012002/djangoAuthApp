@@ -1,8 +1,9 @@
 
-from dataclasses import Field
+from multiprocessing.sharedctypes import Value
+from pydoc import plain
 import random
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout, authenticate, get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
@@ -12,11 +13,12 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.utils.encoding import force_str, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
-from .tokens import password_reset_token
+from .tokens import password_reset_token, account_activation_token
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 import json
+from django.views.decorators.http import require_http_methods, require_POST
 from Todo.settings import EMAIL_HOST_USER
 from .form import UserSignUpForm
 # Create your views here.
@@ -26,6 +28,9 @@ User = get_user_model()
 @login_required
 def home(request):
     return render(request, 'accounts/home.html')
+
+def login_page(request):
+    return render(request, 'registration/login.html')
 
 @ajax_required
 def loginUser(request):
@@ -107,6 +112,7 @@ def password_reset_confirm(request, uidb64, token):
         context = {'is_valid':False}
     return render(request, 'registration/password_reset_confirm.html', context)
 
+
 @ajax_required
 def password_reset_confirm_api(request, uidb64, token):
     if request.method == 'POST':
@@ -130,6 +136,7 @@ def signup(request):
     form = UserSignUpForm()
     return render(request, 'registration/signup.html', {'form':form})
 
+@require_http_methods(['POST'])
 @ajax_required
 def signup_api(request):
     if request.method == 'POST':
@@ -137,8 +144,43 @@ def signup_api(request):
         if form.is_valid():
             newUser = form.save(commit=False)
             newUser.set_password(form.cleaned_data['password'])
+            newUser.is_active = False
             newUser.save()
+            # activation email
+            site = get_current_site(request)
+            htmlMessage = render_to_string(
+                'registration/account_activation_email.html',
+                context={
+                    'domain':site.domain,
+                    'protocol':'http',
+                    'user': newUser,
+                    'uid': urlsafe_base64_encode(force_bytes(newUser.pk)),
+                    'token': account_activation_token.make_token(newUser)
+                }
+            )
+            plain_message = strip_tags(htmlMessage)
+            send_mail(
+                'ACCOUNT ACTIVATION',
+                plain_message,
+                EMAIL_HOST_USER,
+                [newUser.email],
+                html_message=htmlMessage
+                )
+
             return JsonResponse({'status': 'ok'})
         else:
-            return JsonResponse({'status':'error', 'errors':form.errors.as_json()})
-    
+            return JsonResponse({'status':'error', 'errors':form.errors})
+
+
+def account_activation(request, uidb64, token):
+    uid = urlsafe_base64_decode(uidb64)
+    try:
+        user = User.objects.get(pk=uid)
+    except (TypeError ,ValueError, OverflowError, User.DoesNotExist) as e:
+        user = None
+    if user is not None and account_activation_token.check_token(user ,token):
+        user.is_active = True
+        user.save()
+        return render(request,'registration/account_activation.html', {'is_valid':True})
+    else:
+        return render(request,'registration/account_activation.html', {'is_valid':False})

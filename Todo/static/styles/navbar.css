@@ -9,17 +9,17 @@
 }
 
 :root {
-    --nav-background: black ;
+    --nav-background: #1b1b1b ;
     --item: white; 
     --item-hover: rgb(195, 195, 195);
     --nav-height: 60px;
     --search-background: #373737;
     --search-txt: white;
     --search-icon-background: #8E3200;
-    --search-icon: black;
+    --search-icon: #1b1b1b;
     --icon-background :#D7A86E;
     --icon-color : #8E3200;
-    --subnav-background:  black;
+    --subnav-background:  #1b1b1b;
     --subnav-item: white;
     --subnav-item-hover: rgb(40, 40, 40);
 }
@@ -33,7 +33,6 @@
     min-width: 760px;
     background-color: var(--nav-background);
     padding: 0 40px;
-    box-shadow: 0 0 15px -3px;
 }
 
 .nav a, i{

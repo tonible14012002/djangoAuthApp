@@ -70,7 +70,7 @@ function generateSubmitAlert(options = {
                <h3 class="${options.selector}__title">${options.title}</h3>
                 <p class="${options.selector}__body">${options.body}</p>
             </div>
-            <a class="${options.selector}__link" href="${options.link}">${options.linkName}</a>
+            <a class="${options.selector}__link"  href="${options.link}">${options.linkName}</a>
         </div>
     `
     return submitAlert

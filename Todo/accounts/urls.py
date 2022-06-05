@@ -23,5 +23,6 @@ urlpatterns = [
     path('password_reset/confirm/api/<uidb64>/<token>', views.password_reset_confirm_api, name='password_reset_confirm_api'),
     path('sign_up/', views.signup, name='sign_up'),
     path('sign_up_api', views.signup_api, name='sign_up_api'),
-
+    path('activate/<uidb64>/<token>', views.account_activation, name='account_activation'),
+    
 ]

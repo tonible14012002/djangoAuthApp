@@ -35,3 +35,4 @@ class UserSignUpForm(forms.ModelForm):
         if confirm_password == self.cleaned_data['password']:
             return confirm_password
         raise forms.ValidationError('Password confirm does not match')
+

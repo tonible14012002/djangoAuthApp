@@ -123,3 +123,37 @@ validator.isEmail = (selector, message) => {
         }
     }
 }
+
+
+
+function showFormError(
+    options = {
+        formSelector: '#form',
+        errorSelector: '.form__error',
+        errors: undefined,
+        errorClass: 'invalid',
+    }
+) {
+    form  = document.querySelector(options.formSelector)
+    if (form && options.errors) {
+        // console.log(attrs)
+        // errorContainer.innerHTML = ''
+        console.log(options.errors)
+        var inputElements = document.querySelectorAll('input')
+        inputElements.forEach(inputElement => {
+            var errorElements = [...inputElement.parentNode.querySelectorAll(options.errorSelector)]
+            console.log(errorElements)
+            errorElements.forEach(e=>e.remove())
+            if (options.errors.hasOwnProperty(inputElement.name)){
+                errorContainer = inputElement.parentNode
+                errorContainer.classList.add(options.errorClass)
+                options.errors[inputElement.name].forEach(error => {
+                    var newErrorElement = document.createElement('span')
+                    newErrorElement.innerText = error
+                    newErrorElement.classList.add(options.errorSelector.substring(1))
+                    errorContainer.appendChild(newErrorElement)
+                })
+            }
+        })
+    }
+}
